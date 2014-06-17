@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/template.xhtml">
+    
+    <ui:define name="titulo">
+        Caminhões
+    </ui:define>
+    
+    <ui:define name="content">
+        
+        <p:panel id="listaCaminhoes" header="Caminhões cadastrados">
+            <p:dataTable var="caminhao" value="#{caminhaoMB.caminhoes}" paginator="true" paginatorPosition="bottom" rows="5" style="width: 800px">
+                <p:column headerText="Id">
+                    #{caminhao.id}
+                </p:column>
+                <p:column headerText="Placa" style="width: 30%;">
+                    #{caminhao.placa}
+                </p:column>
+                <p:column headerText="Peso Max.">
+                    #{caminhao.pesoMax}
+                </p:column>
+                <p:column headerText="Volume Max.">
+                    #{caminhao.volumeMax}
+                </p:column>
+                <p:column>
+                    <p:commandButton action="#{caminhaoMB.setCaminhao(caminhao)}" value="Editar" update=":formMaster:cadastroCaminhao"/>
+                </p:column>
+            </p:dataTable>
+        </p:panel>
+        <br/>
+        <p:panel id="cadastroCaminhao" header="Inclusão ou alteração de caminhões">
+            <h:panelGrid columns="2" cellpadding="5">
+                <p:outputLabel for="caminhaoPlaca" value="Placa"/>
+                <p:inputText id="caminhaoPlaca" value="#{caminhaoMB.caminhao.placa}"/>
+
+                <p:outputLabel for="caminhaoPeso" value="Peso Max."/>
+                <p:inputText id="caminhaoPeso" value="#{caminhaoMB.caminhao.pesoMax}"/>
+
+                <p:outputLabel for="caminhaoVolume" value="Volume Max."/>
+                <p:inputText id="caminhaoVolume" value="#{caminhaoMB.caminhao.volumeMax}"/>
+            </h:panelGrid>
+            <p:commandButton action="#{caminhaoMB.novoCaminhao()}" value="Novo" update="cadastroCaminhao"/>
+            <p:commandButton action="#{caminhaoMB.cadastrarCaminhao()}" value="Cadastrar" update="cadastroCaminhao listaCaminhoes"/>
+        </p:panel>
+        
+    </ui:define>
+</ui:composition>
+

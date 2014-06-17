@@ -1,0 +1,141 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/template.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="titulo">
+        Chegar
+    </ui:define>
+
+    <ui:define name="content">
+        <h:panelGroup id="tabelas">
+            <p:panel header="Chegando lá...">
+                <p:dataTable var="carga" value="#{cargaMB.cargasEntregando}">
+                    <p:column headerText="Caminhão">
+                        #{carga.caminhao.placa}
+                    </p:column>
+                    <p:column headerText="Motorista">
+                        #{carga.motorista.nomeFormal}
+                    </p:column>
+                    <p:column headerText="Destino">
+                        #{carga.destino}
+                    </p:column>
+                    <p:column headerText="Qtd. Items">
+                        #{carga.itens.size()}
+                        <p:spacer width="10"/>
+                        <p:commandButton update=":formMaster:itensDetalhes" oncomplete="PF('itemDialog').show()" value="Ver!" title="Visualizar itens">
+                            <f:setPropertyActionListener value="#{carga.itens}" target="#{cargaMB.visualizarItens}"/>
+                        </p:commandButton>
+                    </p:column>
+                    <p:column>
+                        <p:commandButton value="Chegou lá!" actionListener="#{cargaMB.chegouLa(carga)}" update=":formMaster:tabelas, :formMaster:caminhao"/>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+            <br/>
+            tgfdgdggfghhghj
+            <p:panel header="Cargas para entregar lá...">
+                <p:dataTable var="carga" value="#{cargaMB.cargasEntregar}">
+                    <p:column headerText="Caminhão">
+                        #{carga.caminhao.placa}
+                    </p:column>
+                    <p:column headerText="Destino">
+                        #{carga.destino}
+                    </p:column>
+                    <p:column headerText="Qtd. Items">
+                        #{carga.itens.size()}
+                        <p:spacer width="10"/>
+                        <p:commandButton update=":formMaster:itensDetalhes" oncomplete="PF('itemDialog').show()" value="Ver!" title="Visualizar itens">
+                            <f:setPropertyActionListener value="#{carga.itens}" target="#{cargaMB.visualizarItens}"/>
+                        </p:commandButton>
+                    </p:column>
+                    <p:column>
+                        <p:commandButton value="Chega lá!" actionListener="#{cargaMB.selecionarMotoristaCarga(carga)}">
+                            <p:ajax event="dialogReturn" listener="#{cargaMB.onSelecionarMotoristaCarga}" update=":formMaster:tabelas"/>
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+                <p:dialog header="Itens" widgetVar="itemDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                    <p:outputPanel id="itensDetalhes">
+                        <p:dataTable rendered="#{not empty cargaMB.visualizarItens}" var="item" value="#{cargaMB.visualizarItens}" style="width: 600px">
+                            <p:column headerText="Descrição">
+                                #{item.descricao}
+                            </p:column>
+                            <p:column headerText="Peso" style="width: 25%">
+                                #{item.peso}
+                            </p:column>
+                            <p:column headerText="Volume" style="width: 25%">
+                                #{item.volume}
+                            </p:column>
+                        </p:dataTable>
+                    </p:outputPanel>
+                </p:dialog>
+            </p:panel>
+        </h:panelGroup>
+        <h:panelGroup id="caminhao">
+            
+            <p:panel id="selecionarCaminhao" rendered="#{cargaMB.carga.caminhao == null}" header="Caminhão para chegar lá...">
+                <p:dataTable var="caminhao" value="#{cargaMB.caminhoes}">
+                    <p:column headerText="Placa">
+                        #{caminhao.placa}
+                    </p:column>
+                    <p:column headerText="Peso Max.">
+                        #{caminhao.pesoMax}
+                    </p:column>
+                    <p:column headerText="Volume Max.">
+                        #{caminhao.volumeMax}
+                    </p:column>
+                    <p:column>
+                        <p:commandButton value="Selecionar" action="#{cargaMB.selecionarCaminhao(caminhao)}" update=":formMaster:caminhao"/>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+
+            <p:panel id="informacaoCaminhao" rendered="#{cargaMB.carga.caminhao != null}" header="Informações do caminhão">
+                <p:panel>
+                    <h:panelGrid columns="2">
+                        <p:chart type="metergauge" model="#{cargaMB.pesoGauge}" style="width: 400px; height: 250px"/>
+                        <p:chart type="metergauge" model="#{cargaMB.volumeGauge}" style="width: 400px; height: 250px"/>
+                    </h:panelGrid>
+                    <p:dataTable var="item" value="#{cargaMB.carga.itens}" style="width: 800px">
+                        <p:column headerText="Descricao" style="width: 35%;">
+                            #{item.descricao}
+                        </p:column>
+                        <p:column headerText="Peso">
+                            #{item.peso}
+                        </p:column>
+                        <p:column headerText="Volume">
+                            #{item.volume}
+                        </p:column>
+                        <p:column>
+                            <p:commandButton value="Excluir" action="#{cargaMB.excluirItem(item)}" update=":formMaster:caminhao"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+                <br/>
+                <p:panel>
+                    <h:panelGroup id="infoItem">
+                        <h:panelGrid columns="2">
+                            <p:outputLabel value="Descricao"/>
+                            <p:inputText value="#{cargaMB.item.descricao}"/>
+                            <p:outputLabel value="Peso"/>
+                            <p:inputText value="#{cargaMB.item.peso}"/>
+                            <p:outputLabel value="Volume"/>
+                            <p:inputText value="#{cargaMB.item.volume}"/>
+                        </h:panelGrid>
+                    </h:panelGroup>
+                    <p:commandButton value="Novo" action="#{cargaMB.novoItem}" update="caminhao"/>
+                    <p:commandButton value="Inserir" action="#{cargaMB.inserirItem}" update="caminhao"/>
+                </p:panel>
+                <br/>
+                <h:panelGrid columns="2">
+                    <p:outputLabel value="Destino"/>
+                    <p:inputText value="#{cargaMB.carga.destino}"/>
+                </h:panelGrid>
+                <p:commandButton value="Lançar carga para chegar" action="#{cargaMB.cadastrarCarga}" update=":formMaster:caminhao :formMaster:tabelas"/>
+            </p:panel>
+        </h:panelGroup>
+    </ui:define>
+</ui:composition>

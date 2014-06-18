@@ -8,6 +8,7 @@ import com.chegala.persistence.CaminhaoRepositorio;
 import com.chegala.persistence.CargaRepositorio;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -76,6 +77,7 @@ public class CargaMB implements Serializable {
         carga.getMotorista().setDisponivel(true);
         carga.getCaminhao().setDisponivel(true);
         carga.setEntregue(true);
+        carga.setDataChegada(new Date());
         carga.salvar();
         atualizarCaminhoes();
         atualizarCargasEntregando();
@@ -91,6 +93,7 @@ public class CargaMB implements Serializable {
         Motorista motorista = (Motorista) event.getObject();
         motorista.setDisponivel(false);
         cargaSelecionadaUltima.setMotorista(motorista);
+        cargaSelecionadaUltima.setDataSaida(new Date());
         cargaSelecionadaUltima.salvar();
         atualizarCargasEntregando();
         atualizarCargasEntregar();
@@ -123,6 +126,7 @@ public class CargaMB implements Serializable {
 
     public void cadastrarCarga() {
         carga.getCaminhao().setDisponivel(false);
+        carga.setDataCriacao(new Date());
         carga.salvar();
         inicializar();
     }

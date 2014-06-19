@@ -8,6 +8,7 @@ package com.chegala.MB;
 
 import com.chegala.model.Carga;
 import com.chegala.persistence.CargaRepositorio;
+import java.io.Serializable;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -18,7 +19,7 @@ import javax.faces.bean.ViewScoped;
  */
 @ManagedBean
 @ViewScoped
-public class HistoricoMB {
+public class HistoricoMB implements Serializable {
     List<Carga> cargasEntregues = CargaRepositorio.getCargasEntregues();
 
     public List<Carga> getCargasEntregues() {

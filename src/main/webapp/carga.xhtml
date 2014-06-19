@@ -30,10 +30,10 @@
                         </p:commandButton>
                     </p:column>
                     <p:column headerText="Criado em">
-                        #{carga.dataCriacao}
+                        #{carga.dataCriacao.toLocaleString()}
                     </p:column>
                     <p:column headerText="Saiu em">
-                        #{carga.dataSaida}
+                        #{carga.dataSaida.toLocaleString()}
                     </p:column>
                     <p:column>
                         <p:commandButton value="Chegou lá!" actionListener="#{cargaMB.chegouLa(carga)}" update=":formMaster:tabelas, :formMaster:caminhao"/>
@@ -57,7 +57,7 @@
                         </p:commandButton>
                     </p:column>
                     <p:column headerText="Criado em">
-                        #{carga.dataCriacao}
+                        #{carga.dataCriacao.toLocaleString()}
                     </p:column>
                     <p:column>
                         <p:commandButton value="Chega lá!" actionListener="#{cargaMB.selecionarMotoristaCarga(carga)}">

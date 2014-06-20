@@ -29,13 +29,18 @@
                             <f:setPropertyActionListener value="#{carga.itens}" target="#{cargaMB.visualizarItens}"/>
                         </p:commandButton>
                     </p:column>
+                    <p:column headerText="Criado em">
+                        #{carga.dataCriacao}
+                    </p:column>
+                    <p:column headerText="Saiu em">
+                        #{carga.dataSaida}
+                    </p:column>
                     <p:column>
                         <p:commandButton value="Chegou lá!" actionListener="#{cargaMB.chegouLa(carga)}" update=":formMaster:tabelas, :formMaster:caminhao"/>
                     </p:column>
                 </p:dataTable>
             </p:panel>
             <br/>
-            tgfdgdggfghhghj
             <p:panel header="Cargas para entregar lá...">
                 <p:dataTable var="carga" value="#{cargaMB.cargasEntregar}">
                     <p:column headerText="Caminhão">
@@ -50,6 +55,9 @@
                         <p:commandButton update=":formMaster:itensDetalhes" oncomplete="PF('itemDialog').show()" value="Ver!" title="Visualizar itens">
                             <f:setPropertyActionListener value="#{carga.itens}" target="#{cargaMB.visualizarItens}"/>
                         </p:commandButton>
+                    </p:column>
+                    <p:column headerText="Criado em">
+                        #{carga.dataCriacao}
                     </p:column>
                     <p:column>
                         <p:commandButton value="Chega lá!" actionListener="#{cargaMB.selecionarMotoristaCarga(carga)}">

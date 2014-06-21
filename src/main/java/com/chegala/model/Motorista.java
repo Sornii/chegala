@@ -30,7 +30,7 @@ public class Motorista implements Serializable {
     private String cpf;
     private String registro;
     private boolean disponivel = true;
-    
+
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             mappedBy = "motorista")
@@ -78,13 +78,13 @@ public class Motorista implements Serializable {
 
     public String getUltimoNome() {
         String[] split = getNomeCompleto().split(" ");
-        if(split.length > 0){
+        if (split.length > 1) {
             return split[split.length - 1];
         }
         return "";
     }
-    
-    public String getNomeFormal(){
+
+    public String getNomeFormal() {
         return getPrimeiroNome() + " " + getUltimoNome();
     }
 

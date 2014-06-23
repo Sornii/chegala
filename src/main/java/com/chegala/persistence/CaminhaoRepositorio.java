@@ -2,63 +2,64 @@ package com.chegala.persistence;
 
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import com.chegala.model.Caminhao;
-import com.chegala.model.Carga;
+import javax.inject.Singleton;
 import javax.persistence.TypedQuery;
 
-public class CaminhaoRepositorio {
-
-    public static void salvar(Caminhao caminhao) {
-        EntityManager em = JPA.getEM();
-        EntityTransaction t = em.getTransaction();
-        t.begin();
-        em.merge(caminhao);
-        t.commit();
+@Singleton
+public class CaminhaoRepositorio extends BaseRepositorio<Caminhao>{
+    
+    private static final CaminhaoRepositorio instance = new CaminhaoRepositorio();
+    
+    private CaminhaoRepositorio() {
+    }
+    
+    public static CaminhaoRepositorio getInstance(){
+        return instance;
     }
 
-    public static void excluir(Caminhao caminhao) {
-        EntityManager em = JPA.getEM();
-        EntityTransaction t = em.getTransaction();
-        t.begin();
-
-        em.remove(em.find(Caminhao.class, caminhao.getId()));
-
-        t.commit();
-    }
-
-    public static Caminhao getCaminhao(Integer codigo) {
+    public Caminhao getCaminhao(Integer codigo) {
         EntityManager em = JPA.getEM();
         return em.find(Caminhao.class, codigo);
     }
 
-    public static Caminhao getCaminhao(String placa) {
+    public Caminhao getCaminhao(String placa) {
         EntityManager em = JPA.getEM();
-        TypedQuery<Caminhao> query = em.createQuery("select c from Caminhao c where c.placa = :placa", Caminhao.class);
+        TypedQuery<Caminhao> query = em.createQuery("SELECT c "
+                + "FROM Caminhao c "
+                + "WHERE c.placa = :placa", Caminhao.class);
         query.setParameter("placa", placa);
         return query.getSingleResult();
     }
 
-    public static List<Caminhao> getCaminhoes() {
+    public List<Caminhao> getCaminhoes() {
         EntityManager em = JPA.getEM();
-        return em.createQuery("select c from Caminhao c", Caminhao.class).getResultList();
+        return em.createQuery("SELECT c "
+                + "FROM Caminhao c", Caminhao.class)
+                .getResultList();
     }
 
-    public static List<Caminhao> getCaminhoesDisponiveis() {
+    public List<Caminhao> getCaminhoesDisponiveis() {
         EntityManager em = JPA.getEM();
         return em.createQuery("SELECT c "
                 + "FROM Caminhao c "
-                + "WHERE c.disponivel = true", Caminhao.class).getResultList();
+                + "WHERE c.disponivel = true", Caminhao.class)
+                .getResultList();
     }
-
-    public static boolean isCaminhaoDisponivel(Integer codigo) {
+    
+    public Integer contarCaminhoesDisponiveis(){
         EntityManager em = JPA.getEM();
-        TypedQuery<Caminhao> query = 
-                em.createQuery("SELECT c "
+        return em.createQuery("SELECT count(c) "
                 + "FROM Caminhao c "
-                + "WHERE c.id = :codigo "
-                + "AND c.disponivel = false", Caminhao.class);
-        query.setParameter("codigo", codigo);
-        return query.getResultList().isEmpty();
+                + "WHERE c.disponivel = true", Integer.class)
+                .getSingleResult();
+        
+    }
+    
+    public Integer contarCaminhoes(){
+        EntityManager em = JPA.getEM();
+        return em.createQuery("SELECT count(c) "
+                + "FROM Caminhao c " , Integer.class)
+                .getSingleResult();
     }
 }

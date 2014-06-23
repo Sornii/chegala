@@ -15,35 +15,40 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 @Entity
-public class Carga implements Serializable {
+public class Carga implements Serializable, ModeloBase {
+
+    @Transient
+    private final CargaRepositorio cargaRepositorio = CargaRepositorio.getInstance();
+
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Integer id;
-    
+
     private String destino;
     @ManyToOne(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
     private Caminhao caminhao;
-    
+
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             mappedBy = "carga")
     private List<Item> itens;
-    
+
     @ManyToOne(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
     private Motorista motorista;
-    
+
     private boolean entregue;
-    
+
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date dataCriacao;
-    
+
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date dataSaida;
-    
+
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date dataChegada;
 
@@ -70,54 +75,84 @@ public class Carga implements Serializable {
     public void setDataChegada(Date dataChegada) {
         this.dataChegada = dataChegada;
     }
-    
-    public Double getPesoTotal(){
+
+    public Double getPesoTotal() {
         Double pesoTotal = 0.0D;
-        
-        for(Item item : getItens()){
+
+        for (Item item : getItens()) {
             pesoTotal += item.getPeso();
         }
-        
+
         return pesoTotal;
     }
-    
-    public Double getVolumeTotal(){
+
+    public Double getVolumeTotal() {
         Double volumeTotal = 0.0D;
-        
-        for(Item item : getItens()){
+
+        for (Item item : getItens()) {
             volumeTotal += item.getVolume();
         }
-        
+
         return volumeTotal;
     }
-    
-    public boolean cabeItem(Item item){
+
+    public boolean cabeItem(Item item) {
         return getCaminhao().getPesoMax() > item.getPeso() + getPesoTotal()
                 || getCaminhao().getVolumeMax() > item.getVolume() + getVolumeTotal();
     }
-    
-    public boolean isCheio(){
+
+    public boolean isCheio() {
         return getVolumeTotal() > getCaminhao().getVolumeMax()
                 || getPesoTotal() > getCaminhao().getPesoMax();
     }
-    
-    public boolean addItem(Item item){
-        if(cabeItem(item)){
+
+    public boolean addItem(Item item) {
+        if (cabeItem(item)) {
             getItens().add(item);
             item.setCarga(this);
             return true;
         }
         return false;
     }
-    
-    public void excluirItem(Item item){
+
+    public void excluirItem(Item item) {
         itens.remove(item);
     }
-    
-    public void salvar(){
-        CargaRepositorio.salvar(this);
+
+    public void salvar() {
+        if (dataCriacao == null) {
+            dataCriacao = new Date();
+        }
+
+        cargaRepositorio.salvar(this);
     }
-    
+
+    public void chegarLa() {
+
+    }
+
+    public void chegaLa(Motorista motorista, Date dataSaida) {
+        motorista.setDisponivel(false);
+        setMotorista(motorista);
+        setDataSaida(dataSaida);
+    }
+
+    public void chegaLa(Motorista motorista) {
+        chegaLa(motorista, new Date());
+    }
+
+    public void chegouLa(Date dataChegada) {
+        getMotorista().setDisponivel(true);
+        getCaminhao().setDisponivel(true);
+        setEntregue(true);
+        setDataChegada(dataChegada);
+    }
+
+    public void chegouLa() {
+        chegouLa(new Date());
+    }
+
+    @Override
     public Integer getId() {
         return id;
     }
@@ -139,11 +174,17 @@ public class Carga implements Serializable {
     }
 
     public void setCaminhao(Caminhao caminhao) {
+        if (caminhao != null) {
+            caminhao.setDisponivel(true);
+        }
         this.caminhao = caminhao;
+        if (caminhao != null) {
+            caminhao.setDisponivel(false);
+        }
     }
 
     public List<Item> getItens() {
-        if(itens == null){
+        if (itens == null) {
             itens = new ArrayList<Item>();
         }
         return itens;

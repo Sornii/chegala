@@ -8,19 +8,24 @@ package com.chegala.MB;
 
 import com.chegala.model.Carga;
 import com.chegala.persistence.CargaRepositorio;
+import java.io.Serializable;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
-/**
- *
- * @author Igor
- */
 @ManagedBean
 @ViewScoped
-public class HistoricoMB {
-    List<Carga> cargasEntregues = CargaRepositorio.getCargasEntregues();
-
+public class HistoricoMB implements Serializable {
+    
+    private final CargaRepositorio cargaRepositorio = CargaRepositorio.getInstance();
+    
+    private List<Carga> cargasEntregues;
+    
+    @PostConstruct
+    public void inicializar() {
+        cargasEntregues = cargaRepositorio.getCargasEntregues();
+    }
     public List<Carga> getCargasEntregues() {
         return cargasEntregues;
     }

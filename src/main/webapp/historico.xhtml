@@ -25,6 +25,15 @@
                 <p:column headerText="Volume">
                     #{chegada.volumeTotal}
                 </p:column>
+                <p:column headerText="Criado">
+                    #{chegada.dataCriacao.toLocaleString()}
+                </p:column>
+                <p:column headerText="Saída">
+                    #{chegada.dataSaida.toLocaleString()}
+                </p:column>
+                <p:column headerText="Chegada">
+                    #{chegada.dataSaida.toLocaleString()}
+                </p:column>
             </p:dataTable>
         </p:panel>
     </ui:define>

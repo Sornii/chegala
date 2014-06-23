@@ -21,7 +21,8 @@ import javax.persistence.ManyToOne;
  * @author Igor
  */
 @Entity
-public class Item implements Serializable {
+public class Item implements Serializable, ModeloBase {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Integer id;
@@ -34,6 +35,7 @@ public class Item implements Serializable {
     @JoinColumn(name = "CARGA_ID")
     private Carga carga;
 
+    @Override
     public Integer getId() {
         return id;
     }

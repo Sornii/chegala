@@ -9,6 +9,7 @@ import com.chegala.persistence.CaminhaoRepositorio;
 import com.chegala.persistence.MotoristaRepositorio;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.inject.Inject;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.BarChartSeries;
 import org.primefaces.model.chart.ChartSeries;
@@ -19,21 +20,29 @@ import org.primefaces.model.chart.ChartSeries;
  */
 @ManagedBean
 public class ChartIndex {
+    
+    @Inject
+    private CaminhaoRepositorio caminhaoRepositorio;
+    
+    @Inject
+    private MotoristaRepositorio motoristaRepositorio;
 
     private BarChartModel model;
 
     @PostConstruct
     public void init() {
         model = new BarChartModel();
+        
+        Integer caminhoesDisponiveis = caminhaoRepositorio.contarCaminhoesDisponiveis();
 
         ChartSeries disponiveis = new BarChartSeries();
         disponiveis.setLabel("Disponíveis");
-        disponiveis.set("Caminhoes", CaminhaoRepositorio.getCaminhoesDisponiveis().size());
+        disponiveis.set("Caminhoes", caminhoesDisponiveis);
         disponiveis.set("Motoristas", MotoristaRepositorio.getMotoristasDisponiveis().size());
 
         ChartSeries ocupados = new BarChartSeries();
         ocupados.setLabel("Ocupados");
-        ocupados.set("Caminhoes", CaminhaoRepositorio.getCaminhoes().size() - CaminhaoRepositorio.getCaminhoesDisponiveis().size());
+        ocupados.set("Caminhoes", caminhaoRepositorio.contarCaminhoes() - caminhoesDisponiveis);
         ocupados.set("Motoristas", MotoristaRepositorio.getMotoristas().size() - MotoristaRepositorio.getMotoristasDisponiveis().size());
 
         model.addSeries(disponiveis);

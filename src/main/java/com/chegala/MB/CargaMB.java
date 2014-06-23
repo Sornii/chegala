@@ -8,7 +8,6 @@ import com.chegala.persistence.CaminhaoRepositorio;
 import com.chegala.persistence.CargaRepositorio;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -23,18 +22,21 @@ import org.primefaces.model.chart.MeterGaugeChartModel;
 @ViewScoped
 public class CargaMB implements Serializable {
 
-    private List<Caminhao> caminhoes;
+    private final CargaRepositorio cargaRepositorio = CargaRepositorio.getInstance();
+    private final CaminhaoRepositorio caminhaoRepositorio = CaminhaoRepositorio.getInstance();
 
-    private List<Carga> cargasEntregar = CargaRepositorio.getCargasEntregar();
-    private List<Carga> cargasEntregando = CargaRepositorio.getCargasEntregando();
+    private List<Caminhao> caminhoesDisponiveis;
+
+    private List<Carga> cargasEntregar;
+    private List<Carga> cargasEntregando;
+    
+    private List<Item> visualizarItens;
 
     private Carga carga;
     private Item item;
 
     private MeterGaugeChartModel pesoGauge;
     private MeterGaugeChartModel volumeGauge;
-    
-    private List<Item> visualizarItens;
 
     @PostConstruct
     public void inicializar() {
@@ -51,82 +53,59 @@ public class CargaMB implements Serializable {
         atualizarVolumeGauge();
     }
 
-    /*
-    
-    private Map<String, Object> getModelOptions() {
-    Map<String, Object> options = new HashMap<String, Object>();
-    options.put("modal", true);
-    return options;
-    }
-
-    public void selecionaCaminhao() {
-    RequestContext.getCurrentInstance().openDialog("selecionarCaminhao", getModelOptions(), null);
-    }
-
-    public void onSelecionaCaminhao(SelectEvent event) {
-    Caminhao caminhao = (Caminhao) event.getObject();
-    carga.setCaminhao(caminhao);
-    atualizarGauges();
-    }
-    
-    */
-    
     private Carga cargaSelecionadaUltima;
-    
-    public void chegouLa(Carga carga){
-        carga.getMotorista().setDisponivel(true);
-        carga.getCaminhao().setDisponivel(true);
-        carga.setEntregue(true);
-        carga.setDataChegada(new Date());
+
+    public void chegouLa(Carga carga) {
+
+        carga.chegouLa();
         carga.salvar();
+
         atualizarCaminhoes();
         atualizarCargasEntregando();
         atualizarCargasEntregar();
     }
-    
-    public void selecionarMotoristaCarga(Carga carga){
+
+    public void selecionarMotoristaCarga(Carga carga) {
         cargaSelecionadaUltima = carga;
         RequestContext.getCurrentInstance().openDialog("selecionarMotorista");
     }
-    
-    public void onSelecionarMotoristaCarga(SelectEvent event){
+
+    public void onSelecionarMotoristaCarga(SelectEvent event) {
         Motorista motorista = (Motorista) event.getObject();
-        motorista.setDisponivel(false);
-        cargaSelecionadaUltima.setMotorista(motorista);
-        cargaSelecionadaUltima.setDataSaida(new Date());
+
+        cargaSelecionadaUltima.chegaLa(motorista);
         cargaSelecionadaUltima.salvar();
+
         atualizarCargasEntregando();
         atualizarCargasEntregar();
     }
-    
-    private void atualizarCargasEntregar(){
-        cargasEntregar = CargaRepositorio.getCargasEntregar();
+
+    private void atualizarCargasEntregar() {
+        cargasEntregar = cargaRepositorio.getCargasEntregar();
     }
-    
-    private void atualizarCargasEntregando(){
-        cargasEntregando = CargaRepositorio.getCargasEntregando();
+
+    private void atualizarCargasEntregando() {
+        cargasEntregando = cargaRepositorio.getCargasEntregando();
     }
-    
-    private void atualizarCaminhoes(){
-        caminhoes = CaminhaoRepositorio.getCaminhoesDisponiveis();
+
+    private void atualizarCaminhoes() {
+        caminhoesDisponiveis = caminhaoRepositorio.getCaminhoesDisponiveis();
     }
-    
+
     public void selecionarCaminhao(Caminhao caminhao) {
         carga.setCaminhao(caminhao);
         atualizarGauges();
     }
 
     public List<Caminhao> getCaminhoes() {
-        return caminhoes;
+        return caminhoesDisponiveis;
     }
 
     public void setCaminhoes(List<Caminhao> caminhoes) {
-        this.caminhoes = caminhoes;
+        this.caminhoesDisponiveis = caminhoes;
     }
 
     public void cadastrarCarga() {
-        carga.getCaminhao().setDisponivel(false);
-        carga.setDataCriacao(new Date());
         carga.salvar();
         inicializar();
     }
@@ -173,7 +152,7 @@ public class CargaMB implements Serializable {
             atualizarGauges();
         } else {
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, null, "Esse item não cabe na carga, retire um para inseri-lo.");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
+            FacesContext.getCurrentInstance().addMessage("msgCarga", msg);
         }
     }
 

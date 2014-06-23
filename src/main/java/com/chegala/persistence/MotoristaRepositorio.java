@@ -3,45 +3,33 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.chegala.persistence;
 
 import com.chegala.model.Motorista;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 
 /**
  *
  * @author Igor
  */
-public class MotoristaRepositorio {
-    public static void salvar(Motorista motorista){
-        EntityManager em = JPA.getEM();
-        EntityTransaction t = em.getTransaction();
-        t.begin();
-        
-        em.merge(motorista);
-        
-        t.commit();
+public class MotoristaRepositorio extends BaseRepositorio<Motorista> {
+
+    private static final MotoristaRepositorio instance = new MotoristaRepositorio();
+
+    private MotoristaRepositorio() {
     }
-    
-    public static void excluir(Motorista motorista) {        
-        EntityManager em = JPA.getEM();
-        EntityTransaction t = em.getTransaction();
-        t.begin();
-        
-        em.remove(em.find(Motorista.class, motorista.getId()));
-        
-        t.commit();
+
+    public static MotoristaRepositorio getInstance() {
+        return instance;
     }
-    
-    public static Motorista getMotorista(Integer codigo){
+
+    public static Motorista getMotorista(Integer codigo) {
         EntityManager em = JPA.getEM();
         return em.find(Motorista.class, codigo);
     }
-    
-    public static List<Motorista> getMotoristas(){
+
+    public static List<Motorista> getMotoristas() {
         EntityManager em = JPA.getEM();
         return em.createQuery("select c from Motorista c").getResultList();
     }

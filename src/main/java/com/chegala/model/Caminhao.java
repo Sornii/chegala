@@ -10,20 +10,23 @@ import com.chegala.persistence.CaminhaoRepositorio;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 /**
  *
  * @author Igor
  */
 @Entity
-public class Caminhao implements Serializable {
+public class Caminhao implements Serializable, ModeloBase {
+    
+    @Transient
+    private final CaminhaoRepositorio caminhaoRepositorio = CaminhaoRepositorio.getInstance();
     
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
@@ -31,13 +34,14 @@ public class Caminhao implements Serializable {
     private String placa;
     private Double pesoMax;
     private Double volumeMax;
-    private boolean disponivel = true;
+    private Boolean disponivel;
     
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             mappedBy = "caminhao")
     List<Carga> cargas;
 
+    @Override
     public Integer getId() {
         return id;
     }
@@ -71,17 +75,24 @@ public class Caminhao implements Serializable {
     }
     
     public void salvar(){
-        CaminhaoRepositorio.salvar(this);
+        caminhaoRepositorio.salvar(this);
     }
     
     public void excluir(){
-        CaminhaoRepositorio.excluir(this);
-    }
-    
-    public boolean isDisponivel() {
-        return CaminhaoRepositorio.isCaminhaoDisponivel(this.id);
+        caminhaoRepositorio.excluir(this);
     }
 
+    public Boolean isDisponivel() {
+        if(disponivel == null){
+            disponivel = true;
+        }
+        return disponivel;
+    }
+
+    public void setDisponivel(Boolean disponivel) {
+        this.disponivel = disponivel;
+    }
+    
     public List<Carga> getCargas() {
         return cargas;
     }

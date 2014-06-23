@@ -16,8 +16,10 @@ import javax.faces.bean.*;
 @ViewScoped
 public class CaminhaoMB implements Serializable {
 
+    private final CaminhaoRepositorio caminhaoRepositorio = CaminhaoRepositorio.getInstance();
+    
     private Caminhao caminhao = new Caminhao();
-    private List<Caminhao> caminhoes = CaminhaoRepositorio.getCaminhoes();
+    private List<Caminhao> caminhoes = caminhaoRepositorio.getCaminhoes();
     
     public CaminhaoMB() {
     }
@@ -27,7 +29,7 @@ public class CaminhaoMB implements Serializable {
     }
     
     public void listarCaminhoes(){
-        caminhoes = CaminhaoRepositorio.getCaminhoes();
+        caminhoes = caminhaoRepositorio.getCaminhoes();
     }
     
     public void cadastrarCaminhao(){

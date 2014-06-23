@@ -24,20 +24,32 @@ public class MotoristaRepositorio extends BaseRepositorio<Motorista> {
         return instance;
     }
 
-    public static Motorista getMotorista(Integer codigo) {
+    public Motorista getMotorista(Integer codigo) {
         EntityManager em = JPA.getEM();
         return em.find(Motorista.class, codigo);
     }
 
-    public static List<Motorista> getMotoristas() {
+    public List<Motorista> getMotoristas() {
         EntityManager em = JPA.getEM();
         return em.createQuery("select c from Motorista c").getResultList();
     }
+    
+    public Integer contarMotoristas() {
+        EntityManager em = JPA.getEM();
+        return em.createQuery("select count(c) from Motorista c", Integer.class).getSingleResult();
+    }
 
-    public static List<Motorista> getMotoristasDisponiveis() {
+    public List<Motorista> getMotoristasDisponiveis() {
         EntityManager em = JPA.getEM();
         return em.createQuery("SELECT m "
                 + "FROM Motorista m "
                 + "WHERE m.disponivel = true ", Motorista.class).getResultList();
+    }
+    
+    public Integer contarMotoristasDisponiveis() {
+        EntityManager em = JPA.getEM();
+        return em.createQuery("SELECT count(m) "
+                + "FROM Motorista m "
+                + "WHERE m.disponivel = true ", Integer.class).getSingleResult();
     }
 }

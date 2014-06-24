@@ -10,6 +10,8 @@ import javax.faces.bean.ViewScoped;
 @ManagedBean
 @ViewScoped
 public class MotoristaMB implements Serializable {
+    
+    private final MotoristaRepositorio motoristaRepositorio = MotoristaRepositorio.getInstance();
 
     private Motorista motorista;
     public List<Motorista> motoristas;
@@ -25,12 +27,12 @@ public class MotoristaMB implements Serializable {
     }
 
     public void atualizarMotorista() {
-        motoristas = MotoristaRepositorio.getMotoristas();
+        motoristas = motoristaRepositorio.getMotoristas();
     }
 
     public List<Motorista> getMotoristas() {
         if (motoristas == null) {
-            motoristas = MotoristaRepositorio.getMotoristas();
+            motoristas = motoristaRepositorio.getMotoristas();
         }
         return motoristas;
     }

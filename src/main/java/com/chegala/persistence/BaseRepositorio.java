@@ -1,8 +1,6 @@
 package com.chegala.persistence;
 
-import com.chegala.model.Carga;
 import com.chegala.model.ModeloBase;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 

@@ -2,11 +2,9 @@ package com.chegala.persistence;
 
 import com.chegala.model.Carga;
 import java.util.List;
-import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-@Singleton
 public class CargaRepositorio extends BaseRepositorio<Carga> {
     
     private static CargaRepositorio instance;

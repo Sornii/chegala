@@ -3,10 +3,8 @@ package com.chegala.persistence;
 import java.util.List;
 import javax.persistence.EntityManager;
 import com.chegala.model.Caminhao;
-import javax.inject.Singleton;
 import javax.persistence.TypedQuery;
 
-@Singleton
 public class CaminhaoRepositorio extends BaseRepositorio<Caminhao>{
     
     private static final CaminhaoRepositorio instance = new CaminhaoRepositorio();

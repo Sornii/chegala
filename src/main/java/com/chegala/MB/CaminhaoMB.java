@@ -19,7 +19,7 @@ public class CaminhaoMB implements Serializable {
     private final CaminhaoRepositorio caminhaoRepositorio = CaminhaoRepositorio.getInstance();
     
     private Caminhao caminhao = new Caminhao();
-    private List<Caminhao> caminhoes = caminhaoRepositorio.getCaminhoes();
+    private List<Caminhao> caminhoes = caminhaoRepositorio.getLista();
     
     public CaminhaoMB() {
     }
@@ -29,7 +29,7 @@ public class CaminhaoMB implements Serializable {
     }
     
     public void listarCaminhoes(){
-        caminhoes = caminhaoRepositorio.getCaminhoes();
+        caminhoes = caminhaoRepositorio.getLista();
     }
     
     public void cadastrarCaminhao(){

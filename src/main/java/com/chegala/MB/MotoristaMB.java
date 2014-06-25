@@ -27,12 +27,12 @@ public class MotoristaMB implements Serializable {
     }
 
     public void atualizarMotorista() {
-        motoristas = motoristaRepositorio.getMotoristas();
+        motoristas = motoristaRepositorio.getLista();
     }
 
     public List<Motorista> getMotoristas() {
         if (motoristas == null) {
-            motoristas = motoristaRepositorio.getMotoristas();
+            motoristas = motoristaRepositorio.getLista();
         }
         return motoristas;
     }

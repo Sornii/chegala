@@ -6,9 +6,10 @@ import javax.persistence.EntityManager;
 
 public class MotoristaRepositorio extends BaseRepositorio<Motorista> {
 
-    private static final MotoristaRepositorio instance = new MotoristaRepositorio();
+    private static final MotoristaRepositorio instance = new MotoristaRepositorio(Motorista.class);
 
-    private MotoristaRepositorio() {
+    private MotoristaRepositorio(Class<Motorista> type) {
+        super(type);
     }
 
     public static MotoristaRepositorio getInstance() {

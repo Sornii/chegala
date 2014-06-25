@@ -7,9 +7,10 @@ import javax.persistence.TypedQuery;
 
 public class CaminhaoRepositorio extends BaseRepositorio<Caminhao>{
     
-    private static final CaminhaoRepositorio instance = new CaminhaoRepositorio();
-    
-    private CaminhaoRepositorio() {
+    private static final CaminhaoRepositorio instance = new CaminhaoRepositorio(Caminhao.class);
+
+    private CaminhaoRepositorio(Class<Caminhao> type) {
+        super(type);
     }
     
     public static CaminhaoRepositorio getInstance(){

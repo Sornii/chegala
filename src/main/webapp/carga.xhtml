@@ -11,6 +11,7 @@
 
     <ui:define name="content">
         <h:panelGroup id="tabelas">
+            <p:messages id="msgCaminhoes" />
             <p:panel header="Chegando lá...">
                 <p:dataTable var="carga" value="#{cargaMB.cargasEntregando}">
                     <p:column headerText="Caminhão">
@@ -103,7 +104,7 @@
 
             <p:panel id="informacaoCaminhao" rendered="#{cargaMB.carga.caminhao != null}" header="Informações do caminhão">
                 <p:panel>
-                    <p:messages id="msgCarga" />
+                    <p:messages id="msgCargas" />
                     <h:panelGrid columns="2">
                         <p:chart type="metergauge" model="#{cargaMB.pesoGauge}" style="width: 400px; height: 250px"/>
                         <p:chart type="metergauge" model="#{cargaMB.volumeGauge}" style="width: 400px; height: 250px"/>

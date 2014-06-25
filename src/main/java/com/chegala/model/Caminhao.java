@@ -34,7 +34,7 @@ public class Caminhao implements Serializable, ModeloBase {
     private String placa;
     private Double pesoMax;
     private Double volumeMax;
-    private Boolean disponivel;
+    private Boolean disponivel = true;
     
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
@@ -83,9 +83,6 @@ public class Caminhao implements Serializable, ModeloBase {
     }
 
     public Boolean isDisponivel() {
-        if(disponivel == null){
-            disponivel = true;
-        }
         return disponivel;
     }
 

@@ -98,7 +98,7 @@ public class Carga implements Serializable, ModeloBase {
 
     public boolean cabeItem(Item item) {
         return getCaminhao().getPesoMax() > item.getPeso() + getPesoTotal()
-                || getCaminhao().getVolumeMax() > item.getVolume() + getVolumeTotal();
+                && getCaminhao().getVolumeMax() > item.getVolume() + getVolumeTotal();
     }
 
     public boolean isCheio() {

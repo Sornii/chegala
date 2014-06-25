@@ -4,6 +4,7 @@ import com.chegala.model.Caminhao;
 import com.chegala.model.Carga;
 import com.chegala.model.Item;
 import com.chegala.model.Motorista;
+import com.chegala.outros.MessageUtil;
 import com.chegala.persistence.CaminhaoRepositorio;
 import com.chegala.persistence.CargaRepositorio;
 import java.io.Serializable;
@@ -29,7 +30,7 @@ public class CargaMB implements Serializable {
 
     private List<Carga> cargasEntregar;
     private List<Carga> cargasEntregando;
-    
+
     private List<Item> visualizarItens;
 
     private Carga carga;
@@ -37,7 +38,7 @@ public class CargaMB implements Serializable {
 
     private MeterGaugeChartModel pesoGauge;
     private MeterGaugeChartModel volumeGauge;
-
+    
     @PostConstruct
     public void inicializar() {
         novaCarga();
@@ -151,8 +152,7 @@ public class CargaMB implements Serializable {
             novoItem();
             atualizarGauges();
         } else {
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, null, "Esse item não cabe na carga, retire um para inseri-lo.");
-            FacesContext.getCurrentInstance().addMessage("msgCarga", msg);
+            MessageUtil.adicionarMensagem(FacesMessage.SEVERITY_ERROR, "Este item não cabe na carga devido o seu pedo ou volume.", "msgCargas");
         }
     }
 

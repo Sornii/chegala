@@ -32,4 +32,9 @@ public class CargaRepositorio extends BaseRepositorio<Carga> {
         TypedQuery<Carga> query = em.createQuery("select c from Carga c where c.entregue = true", Carga.class);
         return query.getResultList();
     }
+    
+    public Long contarCargasEntregar(){
+        EntityManager em = JPA.getEM();
+        return em.createQuery("select count(c) from Carga c where c.motorista is null", Long.class).getSingleResult();
+    }
 }

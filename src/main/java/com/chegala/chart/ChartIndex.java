@@ -29,8 +29,8 @@ public class ChartIndex {
     public void inicializar() {
         model = new BarChartModel();
         
-        Integer caminhoesDisponiveis = caminhaoRepositorio.contarCaminhoesDisponiveis();
-        Integer motoristasDisponiveis = motoristaRepositorio.contarMotoristasDisponiveis();
+        Long caminhoesDisponiveis = caminhaoRepositorio.contarCaminhoesDisponiveis();
+        Long motoristasDisponiveis = motoristaRepositorio.contarMotoristasDisponiveis();
 
         ChartSeries disponiveis = new BarChartSeries();
         disponiveis.setLabel("Disponíveis");
@@ -39,8 +39,8 @@ public class ChartIndex {
 
         ChartSeries ocupados = new BarChartSeries();
         ocupados.setLabel("Ocupados");
-        ocupados.set("Caminhoes", caminhaoRepositorio.contarCaminhoes() - caminhoesDisponiveis);
-        ocupados.set("Motoristas", motoristaRepositorio.contarMotoristas() - motoristasDisponiveis);
+        ocupados.set("Caminhoes", caminhaoRepositorio.getCount() - caminhoesDisponiveis);
+        ocupados.set("Motoristas", motoristaRepositorio.getCount() - motoristasDisponiveis);
 
         model.addSeries(disponiveis);
         model.addSeries(ocupados);

@@ -10,7 +10,8 @@ public class BaseRepositorio<T extends ModeloBase> {
     private final Class<T> type;
     
     private final String selectListar = "SELECT l FROM %s l";
-
+    private final String selectCount = "SELECT COUNT(l) FROM %s l";
+    
     public BaseRepositorio(Class<T> type) {
         this.type = type;
     }
@@ -40,6 +41,12 @@ public class BaseRepositorio<T extends ModeloBase> {
         EntityManager em = JPA.getEM();
         return em.createQuery(getSelect(selectListar), type)
                 .getResultList();
+    }
+    
+    public Long getCount(){
+        EntityManager em = JPA.getEM();
+        return em.createQuery(getSelect(selectCount), Long.class)
+                .getSingleResult();
     }
     
     public String getSelect(String select){

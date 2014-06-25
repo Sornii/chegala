@@ -7,7 +7,7 @@ import javax.persistence.TypedQuery;
 
 public class CargaRepositorio extends BaseRepositorio<Carga> {
     
-    private static CargaRepositorio instance = new CargaRepositorio(Carga.class);
+    private static final CargaRepositorio instance = new CargaRepositorio(Carga.class);
     
     private CargaRepositorio(Class<Carga> type) {
         super(type);

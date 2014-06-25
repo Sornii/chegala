@@ -34,19 +34,12 @@ public class CaminhaoRepositorio extends BaseRepositorio<Caminhao>{
                 .getResultList();
     }
     
-    public Integer contarCaminhoesDisponiveis(){
+    public Long contarCaminhoesDisponiveis(){
         EntityManager em = JPA.getEM();
         return em.createQuery("SELECT count(c) "
                 + "FROM Caminhao c "
-                + "WHERE c.disponivel = true", Integer.class)
+                + "WHERE c.disponivel = true", Long.class)
                 .getSingleResult();
         
-    }
-    
-    public Integer contarCaminhoes(){
-        EntityManager em = JPA.getEM();
-        return em.createQuery("SELECT count(c) "
-                + "FROM Caminhao c " , Integer.class)
-                .getSingleResult();
     }
 }

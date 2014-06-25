@@ -17,11 +17,6 @@ public class CaminhaoRepositorio extends BaseRepositorio<Caminhao>{
         return instance;
     }
 
-    public Caminhao getCaminhao(Integer codigo) {
-        EntityManager em = JPA.getEM();
-        return em.find(Caminhao.class, codigo);
-    }
-
     public Caminhao getCaminhao(String placa) {
         EntityManager em = JPA.getEM();
         TypedQuery<Caminhao> query = em.createQuery("SELECT c "
@@ -29,13 +24,6 @@ public class CaminhaoRepositorio extends BaseRepositorio<Caminhao>{
                 + "WHERE c.placa = :placa", Caminhao.class);
         query.setParameter("placa", placa);
         return query.getSingleResult();
-    }
-
-    public List<Caminhao> getCaminhoes() {
-        EntityManager em = JPA.getEM();
-        return em.createQuery("SELECT c "
-                + "FROM Caminhao c", Caminhao.class)
-                .getResultList();
     }
 
     public List<Caminhao> getCaminhoesDisponiveis() {

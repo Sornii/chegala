@@ -31,7 +31,7 @@ public class BaseRepositorio<T extends ModeloBase> {
         t.commit();
     }
     
-    public T getUnico(int id){
+    public T getUnico(Integer id){
         EntityManager em = JPA.getEM();
         return em.find(type, id);
     }

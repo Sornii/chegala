@@ -16,17 +16,7 @@ public class CargaRepositorio extends BaseRepositorio<Carga> {
     public static CargaRepositorio getInstance(){
         return instance;
     }
-    
-    public Carga getCarga(Integer codigo){
-        EntityManager em = JPA.getEM();
-        return em.find(Carga.class, codigo);
-    }
-    
-    public List<Carga> getCargas(){
-        EntityManager em = JPA.getEM();
-        return em.createQuery("select c from Carga c", Carga.class).getResultList();
-    }
-    
+        
     public List<Carga> getCargasEntregando(){
         EntityManager em = JPA.getEM();
         return em.createQuery("select c from Carga c where c.motorista is not null and c.entregue = false", Carga.class).getResultList();

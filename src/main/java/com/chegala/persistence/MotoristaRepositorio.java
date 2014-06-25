@@ -15,16 +15,6 @@ public class MotoristaRepositorio extends BaseRepositorio<Motorista> {
     public static MotoristaRepositorio getInstance() {
         return instance;
     }
-
-    public Motorista getMotorista(Integer codigo) {
-        EntityManager em = JPA.getEM();
-        return em.find(Motorista.class, codigo);
-    }
-
-    public List<Motorista> getMotoristas() {
-        EntityManager em = JPA.getEM();
-        return em.createQuery("select c from Motorista c").getResultList();
-    }
     
     public Integer contarMotoristas() {
         EntityManager em = JPA.getEM();

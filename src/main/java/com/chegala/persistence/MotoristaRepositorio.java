@@ -2,7 +2,6 @@ package com.chegala.persistence;
 
 import com.chegala.model.Motorista;
 import java.util.List;
-import javax.persistence.EntityManager;
 
 public class MotoristaRepositorio extends BaseRepositorio<Motorista> {
 
@@ -17,16 +16,10 @@ public class MotoristaRepositorio extends BaseRepositorio<Motorista> {
     }
     
     public List<Motorista> getMotoristasDisponiveis() {
-        EntityManager em = JPA.getEM();
-        return em.createQuery("SELECT m "
-                + "FROM Motorista m "
-                + "WHERE m.disponivel = true ", Motorista.class).getResultList();
+        return customGetLista("m.disponivel = true ");
     }
     
     public Long contarMotoristasDisponiveis() {
-        EntityManager em = JPA.getEM();
-        return em.createQuery("SELECT count(m) "
-                + "FROM Motorista m "
-                + "WHERE m.disponivel = true ", Long.class).getSingleResult();
+        return customGetCount("m.disponivel = true ");
     }
 }

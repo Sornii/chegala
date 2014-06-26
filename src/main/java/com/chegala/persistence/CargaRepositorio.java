@@ -2,8 +2,6 @@ package com.chegala.persistence;
 
 import com.chegala.model.Carga;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 
 public class CargaRepositorio extends BaseRepositorio<Carga> {
     
@@ -18,23 +16,18 @@ public class CargaRepositorio extends BaseRepositorio<Carga> {
     }
         
     public List<Carga> getCargasEntregando(){
-        EntityManager em = JPA.getEM();
-        return em.createQuery("select c from Carga c where c.motorista is not null and c.entregue = false", Carga.class).getResultList();
+        return customGetLista("c.motorista is not null and c.entregue = false");
     }
     
     public List<Carga> getCargasEntregar(){
-        EntityManager em = JPA.getEM();
-        return em.createQuery("select c from Carga c where c.motorista is null", Carga.class).getResultList();
+        return customGetLista("c.motorista is null");
     }
     
     public List<Carga> getCargasEntregues(){
-        EntityManager em = JPA.getEM();
-        TypedQuery<Carga> query = em.createQuery("select c from Carga c where c.entregue = true", Carga.class);
-        return query.getResultList();
+        return customGetLista("c.entregue = true");
     }
     
     public Long contarCargasEntregar(){
-        EntityManager em = JPA.getEM();
-        return em.createQuery("select count(c) from Carga c where c.motorista is null", Long.class).getSingleResult();
+        return customGetCount("c.motorista is null");
     }
 }

@@ -1,9 +1,8 @@
 package com.chegala.persistence;
 
-import java.util.List;
-import javax.persistence.EntityManager;
 import com.chegala.model.Caminhao;
-import javax.persistence.TypedQuery;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CaminhaoRepositorio extends BaseRepositorio<Caminhao>{
     
@@ -18,28 +17,17 @@ public class CaminhaoRepositorio extends BaseRepositorio<Caminhao>{
     }
 
     public Caminhao getCaminhao(String placa) {
-        EntityManager em = JPA.getEM();
-        TypedQuery<Caminhao> query = em.createQuery("SELECT c "
-                + "FROM Caminhao c "
-                + "WHERE c.placa = :placa", Caminhao.class);
-        query.setParameter("placa", placa);
-        return query.getSingleResult();
+        List<Parametro> parametros = new ArrayList<Parametro>();
+        parametros.add(new Parametro(":placa", placa));
+        
+        return customGetUnico("c.placa = :placa", parametros);
     }
 
     public List<Caminhao> getCaminhoesDisponiveis() {
-        EntityManager em = JPA.getEM();
-        return em.createQuery("SELECT c "
-                + "FROM Caminhao c "
-                + "WHERE c.disponivel = true", Caminhao.class)
-                .getResultList();
+        return customGetLista("c.disponivel = true");
     }
     
     public Long contarCaminhoesDisponiveis(){
-        EntityManager em = JPA.getEM();
-        return em.createQuery("SELECT count(c) "
-                + "FROM Caminhao c "
-                + "WHERE c.disponivel = true", Long.class)
-                .getSingleResult();
-        
+        return customGetCount("c.disponivel = true");
     }
 }

@@ -4,6 +4,7 @@ import com.chegala.model.ModeloBase;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.TypedQuery;
 
 public class BaseRepositorio<T extends ModeloBase> {
         
@@ -37,9 +38,25 @@ public class BaseRepositorio<T extends ModeloBase> {
         return em.find(type, id);
     }
     
+    public T customGetUnico(String customWhere, List<Parametro> parametros){
+        EntityManager em = JPA.getEM();
+        TypedQuery<T> typedQuery = em.createQuery(getSelect(selectListar + " WHERE "), type);
+        
+        for(Parametro parametro : parametros){
+            typedQuery.setParameter(parametro.getNome(), parametro.getValor());
+        }
+        return null;
+    }
+    
     public List<T> getLista(){
         EntityManager em = JPA.getEM();
         return em.createQuery(getSelect(selectListar), type)
+                .getResultList();
+    }
+    
+    public List<T> customGetLista(String customWhere) {
+        EntityManager em = JPA.getEM();
+        return em.createQuery(getSelect(selectCount + " WHERE " + customWhere), type)
                 .getResultList();
     }
     
@@ -49,7 +66,13 @@ public class BaseRepositorio<T extends ModeloBase> {
                 .getSingleResult();
     }
     
-    public String getSelect(String select){
+    public Long customGetCount(String customWhere) {
+        EntityManager em = JPA.getEM();
+        return em.createQuery(getSelect(selectCount + " WHERE " + customWhere), Long.class)
+                .getSingleResult();
+    }
+    
+    private String getSelect(String select){
         return String.format(select, type.getSimpleName());
     }
 }

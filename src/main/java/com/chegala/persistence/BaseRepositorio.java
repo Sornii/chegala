@@ -7,7 +7,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 
 public class BaseRepositorio<T extends ModeloBase> {
-        
+    
     private final Class<T> type;
     
     private final String selectListar = "SELECT l FROM %s l";

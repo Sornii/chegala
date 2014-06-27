@@ -1,7 +1,7 @@
 package com.chegala.persistence;
 
 public class Parametro {
-    
+
     private final String nome;
     private final Object valor;
 
@@ -13,7 +13,7 @@ public class Parametro {
     public Object getValor() {
         return valor;
     }
-    
+
     public String getNome() {
         return nome;
     }

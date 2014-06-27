@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.chegala.model;
 
 import com.chegala.persistence.CaminhaoRepositorio;
@@ -18,16 +12,12 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
-/**
- *
- * @author Igor
- */
 @Entity
 public class Caminhao implements Serializable, ModeloBase {
-    
+
     @Transient
     private final CaminhaoRepositorio caminhaoRepositorio = CaminhaoRepositorio.getInstance();
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Integer id;
@@ -35,7 +25,7 @@ public class Caminhao implements Serializable, ModeloBase {
     private Double pesoMax;
     private Double volumeMax;
     private Boolean disponivel = true;
-    
+
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             mappedBy = "caminhao")
@@ -73,12 +63,12 @@ public class Caminhao implements Serializable, ModeloBase {
     public void setVolumeMax(Double volumeMax) {
         this.volumeMax = volumeMax;
     }
-    
-    public void salvar(){
+
+    public void salvar() {
         caminhaoRepositorio.salvar(this);
     }
-    
-    public void excluir(){
+
+    public void excluir() {
         caminhaoRepositorio.excluir(this);
     }
 
@@ -89,7 +79,7 @@ public class Caminhao implements Serializable, ModeloBase {
     public void setDisponivel(Boolean disponivel) {
         this.disponivel = disponivel;
     }
-    
+
     public List<Carga> getCargas() {
         return cargas;
     }
@@ -97,12 +87,12 @@ public class Caminhao implements Serializable, ModeloBase {
     public void setCargas(List<Carga> cargas) {
         this.cargas = cargas;
     }
-    
-    public boolean getDisponivel(){
+
+    public boolean getDisponivel() {
         return disponivel;
     }
-    
-    public void setDisponivel(boolean disponivel){
+
+    public void setDisponivel(boolean disponivel) {
         this.disponivel = disponivel;
     }
 }

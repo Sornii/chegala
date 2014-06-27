@@ -14,11 +14,11 @@ public class MotoristaRepositorio extends BaseRepositorio<Motorista> {
     public static MotoristaRepositorio getInstance() {
         return instance;
     }
-    
+
     public List<Motorista> getMotoristasDisponiveis() {
         return customGetLista("m.disponivel = true ");
     }
-    
+
     public Long contarMotoristasDisponiveis() {
         return customGetCount("m.disponivel = true ");
     }

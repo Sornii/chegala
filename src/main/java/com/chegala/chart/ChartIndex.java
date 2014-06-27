@@ -36,11 +36,11 @@ public class ChartIndex {
         if (motoristasDisponiveis == 0) {
             MessageUtil.adicionarMensagem(FacesMessage.SEVERITY_WARN, "Nenhum motorista disponível no momento.", "motoristas");
         }
-        
+
         Long cargasEntregar = cargaRepositorio.contarCargasEntregar();
-        if(cargasEntregar > 0 && motoristasDisponiveis < 1){
+        if (cargasEntregar > 0 && motoristasDisponiveis < 1) {
             MessageUtil.adicionarMensagem(FacesMessage.SEVERITY_WARN, "Você tem uma carga para entregar e não tem motoristas para dirigir.", "cargas");
-        } else if(cargasEntregar > 0) {
+        } else if (cargasEntregar > 0) {
             MessageUtil.adicionarMensagem(FacesMessage.SEVERITY_INFO, "Você tem uma carga para entregar!", "cargas");
         }
     }

@@ -10,12 +10,15 @@ public class BaseRepositorio<T extends ModeloBase> {
 
     private final Class<T> type;
 
-    private final String firstLetter = getFirstLetter();
-    private final String selectListar = "SELECT " + firstLetter + " FROM %s " + firstLetter;
-    private final String selectCount = "SELECT COUNT(" + firstLetter + ") FROM %s " + firstLetter;
-
+    private final String selectListar;
+    private final String selectCount;
+    
     public BaseRepositorio(Class<T> type) {
         this.type = type;
+        
+        final String firstLetter = getFirstLetter();
+        selectListar = "SELECT " + firstLetter + " FROM %s " + firstLetter;
+        selectCount = "SELECT COUNT(" + firstLetter + ") FROM %s " + firstLetter;
     }
 
     public void salvar(T value) {

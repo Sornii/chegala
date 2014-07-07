@@ -18,7 +18,7 @@ public class CaminhaoRepositorio extends BaseRepositorio<Caminhao> {
 
     public Caminhao getCaminhao(String placa) {
         List<Parametro> parametros = new ArrayList<Parametro>();
-        parametros.add(new Parametro(":placa", placa));
+        parametros.add(new Parametro("placa", placa));
 
         return customGetUnico("c.placa = :placa", parametros);
     }
